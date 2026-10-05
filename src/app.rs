@@ -59,22 +59,19 @@ impl App {
         let free_gb = available_space / 1_000_000_000;
 
         if let Some(entry) = self.data.iter_mut().find(|(label, _)| *label == "F DISK") {
-            entry.1 = free_gb; // Troque para free_gb se quiser ver os "345 GB"
+            entry.1 = free_gb;
         }
     }
 
     fn update_network_usage(&mut self) {
-        // Atualiza explicitamente os dados de tráfego de rede
         self.networks.refresh(true);
 
         let mut total_transmitted_bytes = 0;
 
         for (_name, network) in &self.networks {
-            // `transmitted()` retorna os bytes enviados no último intervalo de atualização
             total_transmitted_bytes += network.transmitted();
         }
 
-        // Converte Bytes para Kilobytes
         let tx_kb = total_transmitted_bytes / 1024;
 
         if let Some(entry) = self.data.iter_mut().find(|(label, _)| *label == "NET_TX") {
